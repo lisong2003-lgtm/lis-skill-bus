@@ -107,10 +107,15 @@ jobs:
           call "%SKILLS_SRC%\yuanlin-suanliang\scripts\yuanlin_statesync.cmd" pull --project ci-smoke
           if errorlevel 1 exit /b %errorlevel%
           >> "%BUS_SUMMARY%" echo five statesync cmds: --help exit=0 ; isolated pull exit=0 for cad/anzhuang/zhuangshi/yuanlin ; qty help-only
+          >> "%BUS_SUMMARY%" echo total .cmd smoke exit codes all 0
+          type "%BUS_SUMMARY%"
+          echo [summary] lis-skill-bus Windows CI smoke OK
+          if errorlevel 1 exit /b %errorlevel%
 
       - name: print Job summary
         shell: pwsh
         run: |
           $f = Join-Path $env:RUNNER_TEMP 'bus-summary.txt'
           $body = if (Test-Path -LiteralPath $f) { Get-Content -Raw -LiteralPath $f } else { 'summary marker missing' }
+          Write-Output $body
           "## lis-skill-bus Windows CI`n`n$body" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
