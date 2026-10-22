@@ -44,6 +44,7 @@ if not exist "%BUS_DIR%\integration" mkdir "%BUS_DIR%\integration"
 if not exist "%BUS_DIR%\example_pilot" mkdir "%BUS_DIR%\example_pilot"
 copy /Y "%SCRIPT_DIR%skillbus.py" "%BUS_DIR%\skillbus.py" >nul
 copy /Y "%SCRIPT_DIR%skillbus_client.py" "%BUS_DIR%\skillbus_client.py" >nul
+copy /Y "%SCRIPT_DIR%skillbus_client.cmd" "%BUS_DIR%\skillbus_client.cmd" >nul
 for %%F in (README.md SKILL.md BENEFITS.md mcp-config.example.json) do @copy /Y "%SCRIPT_DIR%%%F" "%BUS_DIR%\%%F" >nul 2>nul
 copy /Y "%SCRIPT_DIR%schemas\*.json" "%BUS_DIR%\schemas" >nul 2>nul
 copy /Y "%SCRIPT_DIR%integration\*.sh" "%BUS_DIR%\integration" >nul 2>nul
