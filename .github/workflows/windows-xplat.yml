@@ -1,0 +1,116 @@
+name: lis-skill-bus Windows CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONIOENCODING: utf-8
+  PYTHONUTF8: "1"
+
+jobs:
+  windows:
+    name: windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: py_compile full .py
+        run: python -m compileall -f -q .
+
+      - name: install_py.py --dry-run (temp CODEX_HOME)
+        shell: cmd
+        env:
+          CODEX_HOME: ${{ runner.temp }}\bus-py-dryrun
+          BUS_DIR: ${{ runner.temp }}\bus-py-dryrun\mcp_servers\lis-skill-bus
+        run: |
+          if not exist "%CODEX_HOME%" mkdir "%CODEX_HOME%"
+          python install_py.py --dry-run
+          if errorlevel 1 exit /b %errorlevel%
+
+      - name: install_skillbus.cmd apply + client pull + uninstall (temp CODEX_HOME)
+        shell: cmd
+        env:
+          BUS_HOME: ${{ runner.temp }}\bus-home
+          BUS_SUMMARY: ${{ runner.temp }}\bus-summary.txt
+        run: |
+          if not exist "%BUS_HOME%" mkdir "%BUS_HOME%"
+          set "CODEX_HOME=%BUS_HOME%"
+          call install_skillbus.cmd --apply
+          if errorlevel 1 exit /b %errorlevel%
+          set "SKILLBUS_STATE_DIR=%CODEX_HOME%\skills\.skillbus"
+          call "%CODEX_HOME%\mcp_servers\lis-skill-bus\skillbus_client.cmd" pull --project ci-smoke
+          if errorlevel 1 exit /b %errorlevel%
+          call install_skillbus.cmd --uninstall
+          if errorlevel 1 exit /b %errorlevel%
+          > "%BUS_SUMMARY%" echo lis-skill-bus install landing: %CODEX_HOME%\mcp_servers\lis-skill-bus
+          >> "%BUS_SUMMARY%" echo skillbus_client.cmd pull --project ci-smoke: exit=0
+          >> "%BUS_SUMMARY%" echo install_skillbus.cmd: apply=0 pull=0 uninstall=0
+
+      - name: five statesync .cmd --help / isolated pull smoke
+        shell: cmd
+        env:
+          SKILLS_SRC: ${{ runner.temp }}\bus-skills
+          CODEX_HOME: ${{ runner.temp }}\bus-smoke-home
+          SMOKE_STATE: ${{ runner.temp }}\bus-smoke-state
+          BUS_SUMMARY: ${{ runner.temp }}\bus-summary.txt
+        run: |
+          if not exist "%SKILLS_SRC%" mkdir "%SKILLS_SRC%"
+          if not exist "%CODEX_HOME%" mkdir "%CODEX_HOME%"
+          if not exist "%SMOKE_STATE%" mkdir "%SMOKE_STATE%"
+          set "SKILLBUS_DISABLE=1"
+          set "SKILLBUS_STATE_DIR=%SMOKE_STATE%"
+          git clone --depth 1 https://github.com/lisong2003-lgtm/cad-file-reader.git "%SKILLS_SRC%\cad-file-reader"
+          if errorlevel 1 exit /b %errorlevel%
+          git clone --depth 1 https://github.com/lisong2003-lgtm/tujian-suanliang.git "%SKILLS_SRC%\tujian-suanliang"
+          if errorlevel 1 exit /b %errorlevel%
+          git clone --depth 1 https://github.com/lisong2003-lgtm/anzhuang-suanliang.git "%SKILLS_SRC%\anzhuang-suanliang"
+          if errorlevel 1 exit /b %errorlevel%
+          git clone --depth 1 https://github.com/lisong2003-lgtm/zhuangshi-suanliang.git "%SKILLS_SRC%\zhuangshi-suanliang"
+          if errorlevel 1 exit /b %errorlevel%
+          git clone --depth 1 https://github.com/lisong2003-lgtm/yuanlin-suanliang.git "%SKILLS_SRC%\yuanlin-suanliang"
+          if errorlevel 1 exit /b %errorlevel%
+          echo === cad_statesync --help ===
+          call "%SKILLS_SRC%\cad-file-reader\scripts\cad_statesync.cmd" --help
+          if errorlevel 1 exit /b %errorlevel%
+          call "%SKILLS_SRC%\cad-file-reader\scripts\cad_statesync.cmd" pull --project ci-smoke
+          if errorlevel 1 exit /b %errorlevel%
+          echo === qty_statesync --help ===
+          call "%SKILLS_SRC%\tujian-suanliang\scripts\qty_statesync.cmd" --help
+          if errorlevel 1 exit /b %errorlevel%
+          echo === anzhuang_statesync --help ===
+          call "%SKILLS_SRC%\anzhuang-suanliang\scripts\anzhuang_statesync.cmd" --help
+          if errorlevel 1 exit /b %errorlevel%
+          call "%SKILLS_SRC%\anzhuang-suanliang\scripts\anzhuang_statesync.cmd" pull --project ci-smoke
+          if errorlevel 1 exit /b %errorlevel%
+          echo === zhuangshi_statesync --help ===
+          call "%SKILLS_SRC%\zhuangshi-suanliang\scripts\zhuangshi_statesync.cmd" --help
+          if errorlevel 1 exit /b %errorlevel%
+          call "%SKILLS_SRC%\zhuangshi-suanliang\scripts\zhuangshi_statesync.cmd" pull --project ci-smoke
+          if errorlevel 1 exit /b %errorlevel%
+          echo === yuanlin_statesync --help ===
+          call "%SKILLS_SRC%\yuanlin-suanliang\scripts\yuanlin_statesync.cmd" --help
+          if errorlevel 1 exit /b %errorlevel%
+          call "%SKILLS_SRC%\yuanlin-suanliang\scripts\yuanlin_statesync.cmd" pull --project ci-smoke
+          if errorlevel 1 exit /b %errorlevel%
+          >> "%BUS_SUMMARY%" echo five statesync cmds: --help exit=0 ; isolated pull exit=0 for cad/anzhuang/zhuangshi/yuanlin ; qty help-only
+
+      - name: print Job summary
+        shell: pwsh
+        run: |
+          $f = Join-Path $env:RUNNER_TEMP 'bus-summary.txt'
+          $body = if (Test-Path -LiteralPath $f) { Get-Content -Raw -LiteralPath $f } else { 'summary marker missing' }
+          "## lis-skill-bus Windows CI`n`n$body" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8

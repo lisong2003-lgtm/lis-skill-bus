@@ -5,7 +5,7 @@ rem 环境: USERPROFILE\.codex; SKIP_MCP_REG=1 只复制不注册 MCP
 setlocal EnableExtensions
 set MODE=%1
 if "%MODE%"=="" set MODE=--help
-set CODEX_HOME=%USERPROFILE%\.codex
+if "%CODEX_HOME%"=="" set CODEX_HOME=%USERPROFILE%\.codex
 set BUS_DIR=%CODEX_HOME%\mcp_servers\lis-skill-bus
 set CONFIG=%CODEX_HOME%\config.toml
 set SCRIPT_DIR=%~dp0
@@ -31,7 +31,7 @@ exit /b 0
 echo 将安装到: %BUS_DIR%
 echo 将复制: skillbus.py / skillbus_client.py / README / SKILL / BENEFITS / mcp-config / schemas / integration / example_pilot
 echo 将注册: %SECTION_LINE% -^> %CONFIG%
-echo （Windows 未实机跑通，仅静态校验通过；建议在真实 Windows/虚拟机复测 --dry-run）
+echo （Windows CI 已覆盖 --dry-run 冒烟）
 exit /b 0
 
 :apply

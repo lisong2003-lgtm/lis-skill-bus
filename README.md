@@ -15,7 +15,7 @@
 - `skillbus.py`             MCP stdio server + CLI 降级入口
 - `schemas/cad-contract-v1.schema.json`  统一联动契约（复用 cad-file-reader/v0 + qto-project/v1）
 - `install_skillbus.sh`     安装/回滚脚本（--dry-run / --apply / --uninstall，macOS/Linux）
-- `install_skillbus.cmd`    Windows 安装壳（调 install_py.py，纯静态校验通过）
+- `install_skillbus.cmd`    Windows 安装壳（调 install_py.py，Windows CI 冒烟）
 - `install_py.py`           .cmd 的跨平台 config 助手（纯 stdlib）
 - `skillbus_client.py`      各 SKILL 的 CLI 接线客户端（push/pull/list/resolve）
 - `skillbus_client.cmd`     Windows CLI 薄壳
@@ -61,5 +61,5 @@
 
 ## Windows 接线验收（2026-10-22）
 - 新增 `skillbus_client.cmd`、`install_skillbus.cmd`（--dry-run/--apply/--uninstall）、`install_py.py`、`integration/*_contract.cmd`（8 个）与五件套 `scripts/*_statesync.cmd`。
-- **Windows 未实机跑通，仅静态校验通过**（CRLF 行尾、无 /Users 或 /bin/sh 硬编码、py 启动器 + %PYTHON%/%CODEX_PYTHON% 回退、默认路径用 %USERPROFILE%\.codex）。
-- lint_cross_platform.py 无新增 ERROR；建议在真实 Windows/虚拟机复测各 `.cmd` 的 --help/--dry-run 冒烟。
+- **Windows 已接入 windows-latest CI**（`.github/workflows/windows-xplat.yml`）：py_compile 全量 + `install_py.py --dry-run` + `install_skillbus.cmd --apply`/`--uninstall` + `skillbus_client.cmd pull` 冒烟 + 五件套 `*_statesync.cmd --help` 冒烟；静态基线仍以 CRLF、无 /Users 或 /bin/sh 硬编码、py 启动器 + %PYTHON%/%CODEX_PYTHON% 回退为准。
+- lint_cross_platform.py 无新增 ERROR。
