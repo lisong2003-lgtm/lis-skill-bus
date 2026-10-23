@@ -1,7 +1,7 @@
 ---
 name: lis-skill-bus
 description: 本地 Skill 联动总线（MCP server 安装器，非业务算法技能）。把 5 个 CAD 技能（cad-file-reader、土建 shangwu-suanliang、安装 anzhuang-suanliang、装饰 zhuangshi-suanliang、园林 yuanlin-suanliang）的项目状态与识图契约接在一起：同一张图只解析一次，各算量技能共享复用。完全本地、不联网；不装也能用（各技能自动降级到自身 state）。前置依赖 cad-file-reader + 至少一个算量技能。一行命令安装到 ~/.codex/mcp_servers/lis-skill-bus 并可选注册 MCP。
-version: 0.1.0
+version: 0.1.1
 license: MIT
 ---
 
@@ -23,7 +23,7 @@ license: MIT
 bash install_skillbus.sh --apply
 ```
 可选：不注册 MCP 只复制文件（`SKIP_MCP_REG=1 bash install_skillbus.sh --apply`）；
-Windows：`install_skillbus.cmd --apply`。
+Windows（GitHub 完整包）：`install_skillbus.cmd --apply`；SkillHub 版若被剔除 `.cmd`，用 `python install_py.py --apply`（功能等价）。
 
 卸载只摘除 MCP 注册，保留已装文件：
 ```bash
