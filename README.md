@@ -63,3 +63,14 @@
 - 新增 `skillbus_client.cmd`、`install_skillbus.cmd`（--dry-run/--apply/--uninstall）、`install_py.py`、`integration/*_contract.cmd`（8 个）与五件套 `scripts/*_statesync.cmd`。
 - **Windows 未实机跑通，仅静态校验通过**（CRLF 行尾、无 /Users 或 /bin/sh 硬编码、py 启动器 + %PYTHON%/%CODEX_PYTHON% 回退、默认路径用 %USERPROFILE%\.codex）。
 - lint_cross_platform.py 无新增 ERROR；建议在真实 Windows/虚拟机复测各 `.cmd` 的 --help/--dry-run 冒烟。
+
+
+## 自检
+
+新增 `self_test.py`（纯 stdlib，临时目录隔离，不读写真实 `SKILLBUS_STATE_DIR`）：
+
+```bash
+python3 self_test.py
+```
+
+可用 `requirements.txt` 里的 `pytest` 运行：`python3 -m pytest self_test.py`。
