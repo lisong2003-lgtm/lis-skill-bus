@@ -18,7 +18,7 @@ ok()   { echo "✔ $*"; }
 
 copy_runtime() {
   mkdir -p "$BUS_DIR/schemas" "$BUS_DIR/integration" "$BUS_DIR/example_pilot"
-  cp "$SCRIPT_DIR/skillbus.py" "$SCRIPT_DIR/skillbus_client.py" "$SCRIPT_DIR/skillbus_client.cmd" "$BUS_DIR/"
+  cp "$SCRIPT_DIR/skillbus.py" "$SCRIPT_DIR/skillbus_client.py" "$BUS_DIR/"
   cp "$SCRIPT_DIR/README.md" "$SCRIPT_DIR/SKILL.md" "$SCRIPT_DIR/BENEFITS.md" "$SCRIPT_DIR/mcp-config.example.json" "$BUS_DIR/" 2>/dev/null || true
   cp "$SCRIPT_DIR/schemas/"*.json "$BUS_DIR/schemas/" 2>/dev/null || true
   cp "$SCRIPT_DIR/integration/"*.sh "$SCRIPT_DIR/integration/"*.cmd "$BUS_DIR/integration/" 2>/dev/null || true

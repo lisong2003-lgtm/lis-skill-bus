@@ -1,11 +1,13 @@
 ---
 name: lis-skill-bus
-description: 本地 Skill 联动总线（MCP server 安装器，非业务算法技能）。把 5 个 CAD 技能（cad-file-reader、土建 shangwu-suanliang、安装 anzhuang-suanliang、装饰 zhuangshi-suanliang、园林 yuanlin-suanliang）的项目状态与识图契约接在一起：同一张图只解析一次，各算量技能共享复用。完全本地、不联网；不装也能用（各技能自动降级到自身 state）。前置依赖 cad-file-reader + 至少一个算量技能。一行命令安装到 ~/.codex/mcp_servers/lis-skill-bus 并可选注册 MCP。
-version: 0.1.1
+slug: lis-skill-bus
+displayName: 本地 Skill 联动总线
+description: 本地 Skill 联动总线（MCP server 安装器，非业务算法技能）。把 5 个 CAD 技能（cad-file-reader、土建 tujian-suanliang、安装 anzhuang-suanliang、装饰 zhuangshi-suanliang、园林 yuanlin-suanliang）的项目状态与识图契约接在一起：同一张图只解析一次，各算量技能共享复用。完全本地、不联网；不装也能用（各技能自动降级到自身 state）。前置依赖 cad-file-reader + 至少一个算量技能。一行命令安装到 ~/.codex/mcp_servers/lis-skill-bus 并可选注册 MCP。
+version: 0.1.4
 license: MIT
 ---
 
-# lis-skill-bus v0.1.0（本地 MCP server 安装器）
+# lis-skill-bus v0.1.4（本地 MCP server 安装器）
 
 ## 这是什么
 `lis-skill-bus` 不是业务技能，不解析图纸、不算量。它是一个本地安装壳/总线：
@@ -15,7 +17,7 @@ license: MIT
 - 纯 Python stdlib、不联网、跨平台（macOS / Linux / Windows）。
 
 ## 前置依赖
-- 至少一个 CAD 识图/算量技能：**cad-file-reader + 至少一个**（土建 `shangwu-suanliang`、安装 `anzhuang-suanliang`、装饰 `zhuangshi-suanliang`、园林 `yuanlin-suanliang`）；
+- 至少一个 CAD 识图/算量技能：**cad-file-reader + 至少一个**（土建 `tujian-suanliang`、安装 `anzhuang-suanliang`、装饰 `zhuangshi-suanliang`、园林 `yuanlin-suanliang`）；
 - Python 3（本机已有 Codex 运行环境即足够）。
 
 ## 安装（一行命令）
