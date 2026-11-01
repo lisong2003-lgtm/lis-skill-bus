@@ -16,5 +16,5 @@ bash install_skillbus.sh --apply
 （Windows：`install_skillbus.cmd --apply`；只复制不注册 MCP：`SKIP_MCP_REG=1 bash install_skillbus.sh --apply`）
 
 ## 预算与边界
-- 几百 KB 级纯脚本，无网络依赖；只写 `~/.codex/mcp_servers/lis-skill-bus` 与可选 MCP 注册项，可一键回滚。
+- 几百 KB 级纯脚本，无网络依赖；只写 `$HOME/.codex/mcp_servers/lis-skill-bus` 与可选 MCP 注册项，可一键回滚。
 - 本技能只做安装器与总线，不算量、不解析图纸；具体算法仍在各技能 canonical 内。

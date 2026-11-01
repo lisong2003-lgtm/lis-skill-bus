@@ -1,4 +1,4 @@
-# lis-skill-bus v0.1.0
+# lis-skill-bus v0.1.6
 
 本地 Skill 联动总线：**Skill 管专业算法，bus 管项目状态与契约**。
 纯 Python stdlib、不联网、跨平台；CLI 与 MCP 双模式，下载即用、可降级。
@@ -12,7 +12,7 @@
 详细话术见 `BENEFITS.md`。
 
 ## 目录
-- `skillbus.py`             MCP stdio server + CLI 降级入口
+- `skillbus.py`             MCP stdio server + CLI 降级入口（含 detect-skill / find-contract）
 - `schemas/cad-contract-v1.schema.json`  统一联动契约（复用 cad-file-reader/v0 + qto-project/v1）
 - `install_skillbus.sh`     安装/回滚脚本（--dry-run / --apply / --uninstall，macOS/Linux）
 - `install_skillbus.cmd`    Windows 安装壳（调 install_py.py，纯静态校验通过）
@@ -34,18 +34,18 @@
 | 解析契约 schema | `resolve_contract` | `resolve-contract` |
 
 ## 状态过滤红线
-- 状态默认存 `~/.codex/skills/.skillbus/state.json`（`SKILLBUS_STATE_DIR` 可改）
+- 状态默认存 `$HOME/.codex/skills/.skillbus/state.json`（`SKILLBUS_STATE_DIR` 可改）
 - 数据库仅本机、不入 iCloud/网盘/Git 远端；公司数据不经过任何网络
 - state.json 损坏时降级为空库并返回 `_corrupted`，不覆盖原文件
 
 ## SKILLBUS_HOME 与 bus 命中优先级（2026-10-22）
 - 客户端（各 SKILL 的 `*_statesync.py`）定位 `skillbus_client.py` 的顺序：
   ① `SKILLBUS_HOME`（bus 目录）或 `SKILLBUS_CLIENT`（直接指向 client 文件）显式环境变量
-  ② `~/.codex/mcp_servers/lis-skill-bus/skillbus_client.py`（**正式安装落点**，即 `install_skillbus.sh --apply` 的目标目录）
-  ③ `~/.codex/skills/lis-skill-bus/skillbus_client.py` 与 `~/.codex/skills/.skillbus/skillbus_client.py`
+  ② `$HOME/.codex/mcp_servers/lis-skill-bus/skillbus_client.py`（**正式安装落点**，即 `install_skillbus.sh --apply` 的目标目录）
+  ③ `$HOME/.codex/skills/lis-skill-bus/skillbus_client.py` 与 `$HOME/.codex/skills/.skillbus/skillbus_client.py`
   ④ 常见本机开发/临时副本目录（临时工作区/开发副本）——先正式，仅正式缺失才回退
 - 命中 dev/临时副本时，statesync 在 stderr 输出告警行：`bus 命中来源：<路径>（临时副本/dev，非正式安装）`；正式命中输出 `（正式安装）`。
-- 找不到 bus（含 `SKILLBUS_DISABLE=1`）不报错：直接写 `~/.codex/skills/.skillbus/state.json`（可用 `SKILLBUS_STATE_DIR` 改位置），与 bus state.json 同构，后续装 bus 可无缝读取。
+- 找不到 bus（含 `SKILLBUS_DISABLE=1`）不报错：直接写 `$HOME/.codex/skills/.skillbus/state.json`（可用 `SKILLBUS_STATE_DIR` 改位置），与 bus state.json 同构，后续装 bus 可无缝读取。
 
 ## 当前边界（骨架版）
 - MCP 用行分隔 JSON-RPC，满足 initialize / tools/list / tools/call；未实现 resources/notifications 全集
