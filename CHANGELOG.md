@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.1.10 · 2026-11-08 · 技能层瘦身与发布完整性
+
+- **SKILL.md 瘦身**：4,311 B → 3,825 B（-11.3%）。触发词、硬规则、能力边界保留在前置段；低频细则外移到 `references/`、`docs/`、`packs/`，按需加载，算法与业务口径不变。
+- **发布完整性**：被引用文件随包存在、Python/bash/JSON 语法通过、技能自检 PASS；未实现的检查如实记 SKIP。
+- **脱敏**：本机路径、真实项目名与公司资料引用替换为通用示例；平台专用入口只改发布副本。
+
+
 ## 0.1.9
 
 - 固化钢结构正式识图口径：`cad-file-reader -> cad-contract/v1 -> lis-skill-bus -> gangjiegou-suanliang`；

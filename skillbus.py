@@ -33,7 +33,6 @@ STATE_DIR = Path(os.environ.get("SKILLBUS_STATE_DIR", CODEX_HOME / "skills" / ".
 STATE_FILE = STATE_DIR / "state.json"
 REGISTRY = {
     "cad-file-reader": "cad-file-reader/v0",
-    "shangwu-suanliang": "qto-project/v1",
     "tujian-suanliang": "qto-project/v1",
     "anzhuang-suanliang": "qto-project/v1",
     "zhuangshi-suanliang": "qto-project/v1",

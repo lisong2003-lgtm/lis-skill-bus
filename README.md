@@ -1,4 +1,4 @@
-# lis-skill-bus v0.1.9
+# lis-skill-bus v0.1.10
 
 本地 Skill 联动总线：**Skill 管专业算法，bus 管项目状态与契约**。
 纯 Python stdlib、不联网、跨平台；CLI 与 MCP 双模式，是正式识图链路的必需契约桥。
@@ -54,7 +54,7 @@
 - 已完成 cad-file-reader、土建、安装、装饰、园林、钢结构 6 个 skill 的 bus 接线段；钢结构的正式链路已收紧为必需 `cad-file-reader -> cad-contract/v1 -> lis-skill-bus -> gangjiegou-suanliang`。
 
 ## 接线验证状态
-- ✅ cad-file-reader 与 tujian-suanliang/shangwu 已完成真实接线与契约发布/拉取验证；原文件备份在 `work/backup_*_SKILL.md`。
+- ✅ cad-file-reader 与 tujian-suanliang 已完成真实接线与契约发布/拉取验证；原文件备份在 `work/backup_*_SKILL.md`。
 - ✅ `integration/pilot_verify.sh` 通过：cad 发布 `cad-contract/v1` → 土建拉取命中 → 契约 schema/候选校验 OK（免重复解图）。
 - ✅ Windows `.cmd` 接线、真实 `cad_scan` 产出的对接 hook 与平台发布变更已完成静态或本机验证。
 - ✅ 已完成安装/装饰/园林 3 个 skill 扩展（SKILL.md 接线段 + scripts/*_statesync.{py,sh} + integration/*_{pull,publish}_contract.sh；字段命中检查通过）。

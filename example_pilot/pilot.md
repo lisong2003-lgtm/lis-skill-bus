@@ -6,7 +6,7 @@
 ## 接线顺序（每步完成再下一步）
 1. cad-file-reader：解析完成后 `push_project_state(project=..., entry=cad-contract/v1)`
    - 契约 = `cad-contract/v1`（内含 project_key / producer / source / contract + 置信分层）
-2. 土建算量（shangwu-suanliang）：开工前 `get_project_state(project=...)`
+2. 土建算量（tujian-suanliang）：开工前 `get_project_state(project=...)`
    - 命中则直接复用候选，不重复读图；未命中表示当前没有可复用契约
 3. bus 记录 `source_skill` 与 `pushed_at`，保证可追溯
 
