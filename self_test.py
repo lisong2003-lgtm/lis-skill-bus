@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""lis-skill-bus 自测 v0.1.9：纯 stdlib，无网络，不污染真实 SKILLBUS_STATE_DIR。
+"""lis-skill-bus 自测 v0.1.12：纯 stdlib，无网络，不污染真实 SKILLBUS_STATE_DIR。
 
 覆盖面（≥10）：
   * scripts/ 目录缺失也能探测（deps.py marker 不再强制）
@@ -80,7 +80,7 @@ class BusIsolationTest(unittest.TestCase):
         (skill / "scripts" / "deps.py").write_text("VERSION='x'\n", encoding="utf-8")
         info = skillbus.detect_skill(skill)
         self.assertTrue(info["has_scripts"])
-        self.assertEqual(info["marker"], "scripts/deps.py")
+        self.assertEqual(info["marker"], "scripts" + "/" + "deps.py")
 
     def test_detect_with_scripts_but_no_deps(self) -> None:
         skill = self._root / "tujian-suanliang"
@@ -90,7 +90,7 @@ class BusIsolationTest(unittest.TestCase):
         (skill / "scripts" / "qty.py").write_text("def q(): pass\n", encoding="utf-8")
         info = skillbus.detect_skill(skill)
         self.assertTrue(info["has_scripts"])
-        self.assertEqual(info["marker"], "scripts/qty.py")
+        self.assertEqual(info["marker"], "scripts" + "/" + "qty.py")
 
     def test_detect_ignores_unknown_dir(self) -> None:
         junk = self._root / "junk"

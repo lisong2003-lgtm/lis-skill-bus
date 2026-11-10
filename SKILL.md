@@ -3,7 +3,7 @@ name: lis-skill-bus
 slug: lis-skill-bus
 displayName: 本地 Skill 联动总线
 description: "Skill 总线复用 cad-contract/v1；不重复解图。触发词：技能总线、联动。"
-version: 0.1.11
+version: 0.1.12
 license: MIT
 ---
 

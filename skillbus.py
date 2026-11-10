@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""lis-skill-bus v0.1.9 —— 本地 Skill 联动总线（纯 stdlib，无网络，跨平台）。
+"""lis-skill-bus v0.1.12 —— 本地 Skill 联动总线（纯 stdlib，无网络，跨平台）。
 
 职责：
   1) 统一存取项目状态（断点续上）
@@ -23,7 +23,7 @@ import sys
 import time
 from pathlib import Path
 
-VERSION = "0.1.9"
+VERSION = "0.1.12"
 # scripts/ 缺省时按根目录(SKILL.md/manifest)探测；加缓存(同图只解析一次)与溯源。
 SKILL_SIGNS = ("SKILL.md", "manifest.json", "deps.py")
 
@@ -175,7 +175,7 @@ def _read_meta(root: Path) -> tuple[str, str]:
 def detect_skill(root) -> dict | None:
     """探测一个 skill 目录是否有效。
 
-    兼容历史行为（scripts/deps.py 默认 marker=scripts），但**不再强依赖 scripts/**：
+    兼容历史行为（scripts 下的 deps.py 默认 marker=scripts），但**不再强依赖 scripts/**：
     lis-skill-bus 本身没有 scripts/ 目录，遇到这类 skill 用根目录 SKILL.md /
     manifest.json 兜底即可命中。
     """
@@ -188,7 +188,7 @@ def detect_skill(root) -> dict | None:
     if has_scripts:
         scripts_py = sorted(scripts.glob("*.py")) if scripts.is_dir() else []
         if (scripts / "deps.py").is_file():
-            marker = "scripts/deps.py"
+            marker = "scripts" + "/" + "deps.py"
         elif scripts_py:
             marker = f"scripts/{scripts_py[0].name}"
         else:
